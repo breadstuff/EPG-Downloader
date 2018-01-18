@@ -57,20 +57,13 @@ echo $i
 #read -n1 -r -p "Press any key to continue..." key
 
 cat epg.xml | tv_grep --on-after now --on-before $i > epgg.xml
-#cat guide.xml | tv_grep --on-after now --on-before 201711290000 > guideg.xml
-
-#start TVH
-#service tvheadend start
-#sleep 180
-# combine the epg-data
-#cat epgg.xml guideg.xml > epgc.xml
 
 #read -n1 -r -p "Press any key to continue..." key
 
 echo TVH starten
 service tvheadend start
 
-#Warten bis xmltv.sock wieder da.
+#wait until xmltv.sock is available.
 ss -x -a | grep "/home/hts/.hts/tvheadend/epggrab/xmltv.sock" >/dev/null
 i=$?
 
@@ -86,9 +79,6 @@ done
 
 
 # write data to xmltv-socket of tvheadend
-#cat guide.xml | socat - UNIX-CONNECT:/home/hts/.hts/tvheadend/epggrab/xmltv.sock
-#sleep 120
 cat epgg.xml | socat - UNIX-CONNECT:/home/hts/.hts/tvheadend/epggrab/xmltv.sock
-#echo "EPG stop" | tee -a "$LOG"
 
 /bin/date | tee -a  "$LOG"
